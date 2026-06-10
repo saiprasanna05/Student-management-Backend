@@ -1,1 +1,12 @@
 node_modules/
+
+#db js file
+
+Project/db/Connection.js
+
+#oldfile
+
+Serverold.js
+
+# Environment variables
+.env
