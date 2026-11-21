@@ -1,4 +1,6 @@
+import { resolve } from "node:dns";
 import { db } from "../db/Connection.js";
+import { rejects } from "node:assert";
 
 export const createUser = (data, callback) => {
     const sql = `
@@ -17,9 +19,19 @@ export const createUser = (data, callback) => {
     ], callback);
 };
 
-export const getUserDetails = (callback) => {
-    const current_students_data = "SELECT * FROM current_students";
-    db.query(current_students_data, callback);
+export const getUserDetails = () => {
+    return new Promise((resolve, reject) => {
+        const current_students_data = "SELECT * FROM current_students";
+
+        db.query(current_students_data, (err, result) => {
+            if (err) reject(err);
+            else resolve(result)
+        })
+
+    })
+
+    // const current_students_data = "SELECT * FROM current_students";
+    // db.query(current_students_data, callback);
 }
 
 export const getSingleUserDetails = (id, callback) => {

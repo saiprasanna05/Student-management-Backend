@@ -1,9 +1,9 @@
 import { error } from "node:console";
-import { createUser } from "../Models/userModels.js";
-import { getUserDetails } from "../Models/userModels.js";
-import { getSingleUserDetails } from "../Models/userModels.js";
-import { deleteUserDetails } from "../Models/userModels.js";
-import { editUserDetails } from "../Models/userModels.js";
+import { createUser, getSingleUserDetails, getUserDetails, deleteUserDetails, editUserDetails } from "../Models/userModels.js";
+// import { getUserDetails } from "../Models/userModels.js";
+// import { getSingleUserDetails } from "../Models/userModels.js";
+// import { deleteUserDetails } from "../Models/userModels.js";
+// import { editUserDetails } from "../Models/userModels.js";
 
 export const addUser = (req, res) => {
     const { firstname, lastname, age, phnumber, location, mail } = req.body;
@@ -24,26 +24,38 @@ export const addUser = (req, res) => {
     });
 };
 
-export const getUser = (req, res) => {
-    getUserDetails((err, results) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: "Database error" });
-        }
-        res.status(200).json({ results, message: "Here is Your data" });
-    })
+export const getUser = async (req, res) => {
+
+    try {
+        const result = await getUserDetails();
+        res.status(200).json({ result, message: "Here is Your data" });
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Database error" })
+    }
+
+    // getUserDetails((err, results) => {
+    //     if (err) {
+    //         console.error(err);
+    //         return res.status(500).json({ error: "Database error" });
+    //     }
+    //     res.status(200).json({ results, message: "Here is Your data" });
+    // })
 }
+
+// res.status(200).json(new Api_response(200, { message: "Received student lists" }));
 
 export const getSingleUser = (req, res) => {
     const ids = req.params.ids;
-    getSingleUserDetails(ids, (err, rows) => {
+    getSingleUserDetails(ids, (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: err.message });
         }
 
-        console.log(rows);
-        res.json(rows[0]);
+        console.log(result);
+        res.json(result[0]);
     })
 }
 

@@ -12,7 +12,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node Project/server.js",
+    "start": "nodemon Project/server.js",
     "dev": "nodemon Project/server.js"
   },
   "author": "",
